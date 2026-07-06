@@ -3,18 +3,28 @@ class Solution:
         """
         Do not return anything, modify s in-place instead.
         """
-        def recursive(start:int, end:int):
-            if(start == end or start > end):
-                return
-            else:
-                x=s[start]
-                s[start]=s[end]
-                s[end]=x
-                start = start+1
-                end = end - 1
-                recursive(start, end)
+        # Note: the below problem go through the recursion concepts
+        # def recursive(start:int, end:int):
+        #     if(start == end or start > end):
+        #         return
+        #     else:
+        #         x=s[start] 
+        #         s[start]=s[end]
+        #         s[end]=x
+        #         start = start+1
+        #         end = end - 1
+        #         recursive(start, end)
             
-        recursive(0, len(s)-1)
+        # recursive(0, len(s)-1)
+
+        left = 0
+        right = len(s)-1
+        while(left<right):
+            s[left], s[right] = s[right], s[left]
+            left+=1
+            right-=1
+        return
+            
         
 
 # Synced seamlessly with LeetHub Pro

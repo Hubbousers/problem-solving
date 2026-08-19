@@ -3,12 +3,10 @@ class Solution:
         pairs = {')':'(','}': '{', ']':'['}
         stack = []
         for ch in s:
-            if len(stack) != 0 and ch in pairs:
-                ele = stack.pop()
-                if ele != pairs[ch]:
-                    return False
-            else:
+            if ch in '({[':
                 stack.append(ch)
+            elif not stack or pairs[ch] != stack.pop():
+                return False
         return len(stack) == 0
             
             

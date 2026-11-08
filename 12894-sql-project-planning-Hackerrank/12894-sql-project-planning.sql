@@ -1,29 +1,11 @@
-WITH project_starts AS (
-    SELECT Start_Date
-    FROM projects
-    WHERE Start_Date NOT IN (
-        SELECT DISTINCT End_Date
-        FROM projects
-    )
+with start as (
+    select start_date, row_number() over (order by start_date) as rn from projects where start_date not in (select distinct end_date from projects)
 ),
-projects_ends AS (
-    SELECT End_Date
-    FROM projects
-    WHERE End_Date NOT IN (
-        SELECT DISTINCT Start_Date
-        FROM projects
-    )
+end as (
+    select end_date, row_number() over (order by end_date) as rn from projects where end_date not in (select distinct start_date from projects)
 )
-SELECT
-    s.Start_Date,
-    MIN(e.End_Date)
-FROM project_starts s
-INNER JOIN projects_ends e
-    ON s.Start_Date < e.End_Date
-GROUP BY s.Start_Date
-ORDER BY
-    (MIN(e.End_Date) - s.Start_Date) ASC,
-    s.Start_Date ASC;
+
+select start.start_date, end.end_date from start inner join end on start.rn = end.rn order by DATEDIFF(end.end_date, start.start_date) asc, start.start_date asc;
 
 
 -- Synced seamlessly with LeetHub Pro
